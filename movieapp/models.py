@@ -41,6 +41,7 @@ class Movie(models.Model):
         db_column="poster_uri"
     )
     
+    # many to one relationship
     director = models.ForeignKey(
         Person, 
         null=True,
@@ -49,16 +50,46 @@ class Movie(models.Model):
         related_name='directedMovies'
     )
 
+    # many to many relationship (association table transparent)
+    # actors = models.ManyToManyField(
+    #     Person, 
+    #     related_name='playedMovies',
+    #     db_table='play'
+    # )
+
+    # many to many relationship with field (association table explicit)
     actors = models.ManyToManyField(
         Person, 
-        related_name='playedMovies',
-        db_table='play'
+        through='play',
+        through_fields=('movie', 'actor'),
+        related_name='playedMovies'
     )
-
 
     def __repr__(self):
         return f"#{self.id} - {self.title} ({self.year})"
     
     __str__ = __repr__
+    
+
+class Play(models.Model):
+    # id auto by django
+    movie = models.ForeignKey(
+        Movie, 
+        db_column='movie_id',
+        related_name='actorsWithRole',
+        on_delete=models.DO_NOTHING
+    )
+    actor = models.ForeignKey(
+        Person, 
+        db_column='actor_id',
+        related_name='moviesWithRole',
+        on_delete=models.DO_NOTHING
+    )
+    role = models.CharField(max_length=150, null = True)
+
+    class Meta:
+        db_table = 'play'
+
+
     
 
