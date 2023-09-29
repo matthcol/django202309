@@ -40,12 +40,21 @@ class Movie(models.Model):
         null=True,
         db_column="poster_uri"
     )
+    
     director = models.ForeignKey(
         Person, 
         null=True,
         on_delete=models.DO_NOTHING,
-        # db_column = "id_director"
+        # db_column = "id_director",
+        related_name='directedMovies'
     )
+
+    actors = models.ManyToManyField(
+        Person, 
+        related_name='playedMovies',
+        db_table='play'
+    )
+
 
     def __repr__(self):
         return f"#{self.id} - {self.title} ({self.year})"
