@@ -8,10 +8,17 @@ class Person(models.Model):
         db_table = "person"
 
     # columns
-    id = models.IntegerField(primary_key=True)
+
+    # explicit key: other name than id or long|small int type
+    # id = models.IntegerField(primary_key=True) // do not generate pk
+    id = models.AutoField(primary_key=True) # pk int auto generated (see also BigAutoField, SmallAutoField)
     name = models.CharField(max_length=150)
     birthdate = models.DateField(null=True)
 
+    def __repr__(self):
+        return f"#{self.id} - {self.name}"
+
+    __str__ = __repr__
 
 class Movie(models.Model):
 
@@ -42,5 +49,7 @@ class Movie(models.Model):
 
     def __repr__(self):
         return f"#{self.id} - {self.title} ({self.year})"
+    
+    __str__ = __repr__
     
 
