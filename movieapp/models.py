@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class Person(models.Model):
@@ -32,20 +33,20 @@ class Movie(models.Model):
     # id implicitly created
     title = models.CharField(max_length=250)
     year = models.IntegerField()
-    duration = models.IntegerField(null=True)
-    pg = models.CharField(max_length=5, choices=Pg.choices, null=True)
-    synopsis = models.CharField(max_length=5000, null=True)
+    duration = models.IntegerField(null=True, blank=True)
+    pg = models.CharField(max_length=5, choices=Pg.choices, null=True, blank=True)
+    synopsis = models.CharField(max_length=5000, null=True, blank=True)
     # NB: use models.TextField to have texte without "limit"
     posterUri = models.CharField(
         max_length=330, 
-        null=True,
+        null=True, blank=True,
         db_column="poster_uri"
     )
     
     # many to one relationship
     director = models.ForeignKey(
         Person, 
-        null=True,
+        null=True, blank=True,
         on_delete=models.DO_NOTHING,
         # db_column = "id_director",
         related_name='directedMovies'
@@ -65,6 +66,11 @@ class Movie(models.Model):
         through_fields=('movie', 'actor'),
         related_name='playedMovies'
     )
+
+    # url resoltion after add/edit movie
+    def get_absolute_url(self):
+        return reverse('movie_detail', kwargs={'id': self.pk})
+        # return reverse('movie_list')
 
     def __repr__(self):
         return f"#{self.id} - {self.title} ({self.year})"

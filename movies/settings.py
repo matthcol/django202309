@@ -85,7 +85,10 @@ DATABASES = {
         "NAME": "dbmovie",
         "PORT": "5432",
         "USER": "umovie",
-        "PASSWORD": "password"
+        "PASSWORD": "password",
+        'TEST': {
+            'NAME': 'dbmovie_test_u',
+        }
     }
 }
 
