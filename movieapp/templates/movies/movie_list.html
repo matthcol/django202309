@@ -1,0 +1,12 @@
+{% extends "movies/layout.html" %}
+
+{% block title %}Movies{% endblock %}
+
+{% block content %}
+<h2>{{list_title}}</h2>
+<ul>
+    {% for movie in movies %}
+        <li><a href="{%url 'movie_detail' movie.id %}">{{movie.title}} ({{movie.year}})</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

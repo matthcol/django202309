@@ -35,6 +35,7 @@ class Movie(models.Model):
     duration = models.IntegerField(null=True)
     pg = models.CharField(max_length=5, choices=Pg.choices, null=True)
     synopsis = models.CharField(max_length=5000, null=True)
+    # NB: use models.TextField to have texte without "limit"
     posterUri = models.CharField(
         max_length=330, 
         null=True,

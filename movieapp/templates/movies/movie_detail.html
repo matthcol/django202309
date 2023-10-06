@@ -1,0 +1,20 @@
+{% extends "movies/layout.html" %}
+
+{% block title %}Movies{% endblock %}
+
+{% block content %}
+<h2>{{movie.title}} ({{movie.year}})</h2>
+<img src="{{movie.posterUri}}" alt="poster movie {{movie.title}}">
+<ul>
+    <li>director: {{movie.director.name|default:"unknown"}}</li>
+    <li>duration: 
+        {% if movie.duration is not None %} 
+            {{movie.duration}} mn
+        {% else %}
+            unknown
+        {% endif %}
+    </li>
+    <li>certification: {{movie.pg|default:"unknown"}}</li>
+    <li>synopsis: {{movie.synopsis|default_if_none:"todo"|truncatechars:300}}</li>
+</ul>
+{% endblock %}
