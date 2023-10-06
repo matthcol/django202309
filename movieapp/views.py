@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Movie
+from .forms import MovieSearchForm
+from django.http import Http404, HttpResponse, HttpResponseBadRequest
 
 # Create your views here.
 def movie_list(request):
@@ -7,5 +9,30 @@ def movie_list(request):
     return render(request, 'movies/movie_list.html', {'movies': movies, 'list_title': 'Movie collection'})
 
 def movie_detail(request, id):
-    movie = Movie.objects.get(pk=id)
+    # try: 
+    #     movie = Movie.objects.get(pk=id)
+    #     return render(request, 'movies/movie_detail.html', {'movie': movie})
+    # except Movie.DoesNotExist:
+    #     raise Http404(f"No movie with id {id}")
+    movie = get_object_or_404(Movie, pk=id)
     return render(request, 'movies/movie_detail.html', {'movie': movie})
+
+def movie_search(request):
+    if request.method == 'GET':
+        # return form as html
+        form = MovieSearchForm()
+    elif request.method == 'POST':
+        # handle form
+        form = MovieSearchForm(request.POST)
+        if form.is_valid():
+            title = form.title
+            return redirect("movie_by_title", title=title)
+    return render(request, 'movies/movie_search_form.html', {'form': form})
+
+# https://docs.djangoproject.com/fr/4.2/ref/request-response/
+
+def demo_http_response(request):
+    return HttpResponse("My custom response")
+
+def demo_bad_request(request):
+    return HttpResponseBadRequest("My custom response")

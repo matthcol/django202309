@@ -1,10 +1,16 @@
 {% extends "movies/layout.html" %}
 
+{% load static %}
+
 {% block title %}Movies{% endblock %}
 
 {% block content %}
 <h2>{{movie.title}} ({{movie.year}})</h2>
-<img src="{{movie.posterUri}}" alt="poster movie {{movie.title}}">
+{% if movie.posterUri is not None %}
+    <img src="{{movie.posterUri}}" alt="poster movie {{movie.title}}">
+{% else %}
+    <img id="clap" src="{% static "movies/images/clap.png" %}" alt="no poster for movie {{movie.title}}">
+{% endif %}
 <ul>
     <li>director: {{movie.director.name|default:"unknown"}}</li>
     <li>duration: 

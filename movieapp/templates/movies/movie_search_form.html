@@ -1,0 +1,13 @@
+{% extends "movies/layout.html" %}
+
+{% block title %}Movie Search{% endblock %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Search">
+</form>
+
+{% endblock %}
